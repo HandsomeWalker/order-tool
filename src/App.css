@@ -1,0 +1,22 @@
+#root {
+  width: 100%;
+  padding: 2rem;
+}
+
+.App {
+  width: 100%;
+}
+
+.menu-container {
+  width: 100%;
+  display: flex;
+  margin-bottom: 1rem;
+  flex-flow: wrap;
+}
+
+.item {
+  border: 1px solid goldenrod;
+  padding: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
