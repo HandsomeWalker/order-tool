@@ -34,26 +34,28 @@ function App() {
   );
 
   const confirm = useCallback(async () => {
-    await navigator.clipboard.writeText(`老板\n${orders.map((item: any) => item.name).join('，')}\n${personNum}个人，12点来吃`);
-    alert('已复制到剪贴板');
+    await navigator.clipboard.writeText(
+      `老板\n${orders
+        .map((item: any) => item.name)
+        .join("，")}\n${personNum}个人，12点来吃`
+    );
+    alert("已复制到剪贴板");
   }, [personNum, orders]);
 
   return (
     <div className="App">
-      <div className="menu-container">
-        {menu.map((item: { name: string; price: number }, idx) => (
-          <div className="item" key={idx}>
-            {item.name} - {item.price}
-          </div>
-        ))}
-      </div>
       <div className="ub ub-ac mar-b10">
         <div className="mar-r10">
-          <input value={foodNum} onChange={(e) => setFoodNum(e.target.value)} />
+          <input
+            style={{ width: 50 }}
+            value={foodNum}
+            onChange={(e) => setFoodNum(e.target.value)}
+          />
           <span>菜</span>
         </div>
         <div className="mar-r10">
           <input
+            style={{ width: 50 }}
             value={personNum}
             onChange={(e) => setPersonNum(e.target.value)}
           />
@@ -67,7 +69,7 @@ function App() {
       <div>
         {orders.map((item: { name: string; price: number }, idx: number) => (
           <span key={idx} style={{ color: "red" }}>
-            {item.name}，
+            {item.name} - {item.price}，
           </span>
         ))}
         <span>
@@ -76,6 +78,13 @@ function App() {
           ，人均：
           {sum / personNum}
         </span>
+      </div>
+      <div className="menu-container">
+        {menu.map((item: { name: string; price: number }, idx) => (
+          <div className="item" key={idx}>
+            {item.name} - {item.price}
+          </div>
+        ))}
       </div>
     </div>
   );
