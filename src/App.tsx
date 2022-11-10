@@ -49,7 +49,7 @@ function App() {
           <input
             style={{ width: 50 }}
             value={foodNum}
-            onChange={(e) => setFoodNum(e.target.value)}
+            onChange={(e) => setFoodNum(parseInt(e.target.value || '0'))}
           />
           <span>菜</span>
         </div>
@@ -57,7 +57,7 @@ function App() {
           <input
             style={{ width: 50 }}
             value={personNum}
-            onChange={(e) => setPersonNum(e.target.value)}
+            onChange={(e) => setPersonNum(parseInt(e.target.value || '0'))}
           />
           <span>人</span>
         </div>
@@ -76,7 +76,7 @@ function App() {
           总价：
           {sum}
           ，人均：
-          {sum / personNum}
+          {personNum === 0 ? 0 : sum / personNum}
         </span>
       </div>
       <div className="menu-container">
