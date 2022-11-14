@@ -1,6 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import menu from "@/assets/menu.json";
 import "./App.css";
+import { ActionSheet } from "antd-mobile";
+import type {
+  Action,
+  ActionSheetShowHandler,
+} from "antd-mobile/es/components/action-sheet";
 
 function calcSum(arr: any[]): number {
   let ret: number = 0;
@@ -15,6 +20,7 @@ function App() {
   const [personNum, setPersonNum] = useState<any>(4);
   const [orders, setOrders] = useState<any>([]);
   const [sum, setSum] = useState(0);
+  const handler = useRef<ActionSheetShowHandler>();
 
   const roll = useCallback(
     (arr: any[]) => {
@@ -42,6 +48,31 @@ function App() {
     alert("已复制到剪贴板");
   }, [personNum, orders]);
 
+  const onMenuClick = useCallback(
+    (clickItem: any) => {
+      const actions: Action[] = orders.map((item: any, idx: number) => ({
+        text: item.name + item.price,
+        key: idx,
+        onClick: (e: any) => {
+          let temp = JSON.parse(JSON.stringify(orders));
+          temp.splice(idx, 1, clickItem);
+          setOrders(temp);
+          setSum(calcSum(temp));
+          handler.current?.close();
+        },
+      }));
+      handler.current = ActionSheet.show({
+        actions,
+        extra: `${clickItem.name}${clickItem.price}替换`,
+      });
+    },
+    [orders]
+  );
+
+  useEffect(() => {
+    roll([]);
+  }, []);
+
   return (
     <div className="App">
       <div className="ub ub-ac mar-b10">
@@ -49,7 +80,7 @@ function App() {
           <input
             style={{ width: 50 }}
             value={foodNum}
-            onChange={(e) => setFoodNum(parseInt(e.target.value || '0'))}
+            onChange={(e) => setFoodNum(parseInt(e.target.value || "0"))}
           />
           <span>菜</span>
         </div>
@@ -57,7 +88,7 @@ function App() {
           <input
             style={{ width: 50 }}
             value={personNum}
-            onChange={(e) => setPersonNum(parseInt(e.target.value || '0'))}
+            onChange={(e) => setPersonNum(parseInt(e.target.value || "0"))}
           />
           <span>人</span>
         </div>
@@ -81,7 +112,7 @@ function App() {
       </div>
       <div className="menu-container">
         {menu.map((item: { name: string; price: number }, idx) => (
-          <div className="item" key={idx}>
+          <div className="item" key={idx} onClick={() => onMenuClick(item)}>
             {item.name} - {item.price}
           </div>
         ))}
